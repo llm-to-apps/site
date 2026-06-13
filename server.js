@@ -12,6 +12,10 @@ const app = express();
 
 let vite;
 
+app.get("/health", (_req, res) => {
+  res.status(200).json({ ok: true });
+});
+
 if (!isProduction) {
   const { createServer } = await import("vite");
   vite = await createServer({
