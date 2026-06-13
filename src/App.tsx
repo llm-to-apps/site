@@ -139,7 +139,7 @@ function Header({
       <nav className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-5">
         <a href="#" className="flex items-center gap-3">
           <span className="flex h-9 w-[74px] items-center justify-center rounded-lg border border-line bg-white px-2">
-            <img src="/brand/os7-logo.svg" alt="OS7" className="h-6 w-auto" />
+            <img src="/assets/os7-logo.svg" alt="OS7" className="h-6 w-auto" />
           </span>
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/44">Beta</span>
         </a>
