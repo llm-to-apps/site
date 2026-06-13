@@ -2,8 +2,12 @@ import { renderToString } from "react-dom/server";
 import { App } from "./App";
 import "./styles.css";
 
-export function render(_url: string) {
-  const html = renderToString(<App />);
+type RenderOptions = {
+  platformUrl: string;
+};
+
+export function render(_url: string, options: RenderOptions) {
+  const html = renderToString(<App platformUrl={options.platformUrl} />);
   const head = [
     "<title>OS7 - операционная система тебя</title>",
     '<meta name="description" content="Опиши, как ты живешь или работаешь. OS7 создаст приложения, базы данных, дашборды и процессы под тебя или твою компанию." />',

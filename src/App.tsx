@@ -17,6 +17,18 @@ import type { LucideIcon } from "lucide-react";
 
 type AudienceMode = "you" | "company";
 
+type AppProps = {
+  platformUrl?: string;
+};
+
+declare global {
+  interface Window {
+    __OS7_SITE_CONFIG__?: {
+      platformUrl?: string;
+    };
+  }
+}
+
 const personalApps = [
   "здоровье",
   "привычки",
@@ -88,7 +100,17 @@ const audienceSlides: Record<
   }
 };
 
-export function App() {
+const defaultPlatformUrl = "https://os7.dev/";
+
+function getClientPlatformUrl() {
+  if (typeof window === "undefined") {
+    return defaultPlatformUrl;
+  }
+
+  return window.__OS7_SITE_CONFIG__?.platformUrl || defaultPlatformUrl;
+}
+
+export function App({ platformUrl = getClientPlatformUrl() }: AppProps) {
   const [audience, setAudience] = useState<AudienceMode>("you");
 
   useEffect(() => {
@@ -115,7 +137,7 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-ink text-white antialiased">
-      <Header audience={audience} onAudienceChange={selectAudience} />
+      <Header audience={audience} onAudienceChange={selectAudience} platformUrl={platformUrl} />
       <main>
         <Hero audience={audience} onAudienceChange={selectAudience} />
         <CoreIdea />
@@ -129,10 +151,12 @@ export function App() {
 
 function Header({
   audience,
-  onAudienceChange
+  onAudienceChange,
+  platformUrl
 }: {
   audience: AudienceMode;
   onAudienceChange: (mode: AudienceMode) => void;
+  platformUrl: string;
 }) {
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-ink/80 backdrop-blur-xl">
@@ -166,14 +190,13 @@ function Header({
           </a>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => onAudienceChange(audience)}
+          <a
+            href={platformUrl}
             className="hidden h-11 items-center gap-2 rounded-lg border border-line px-5 text-sm font-medium text-white transition hover:border-white/25 hover:bg-white/5 sm:flex"
           >
             Начать бесплатно
             <ArrowRight className="size-4" />
-          </button>
+          </a>
           <button className="flex size-11 items-center justify-center rounded-lg border border-line bg-white/5 md:hidden">
             <Menu className="size-5" />
           </button>

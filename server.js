@@ -7,6 +7,7 @@ import express from "express";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const isProduction = process.env.NODE_ENV === "production";
 const port = Number(process.env.PORT || 5173);
+const platformUrl = process.env.PLATFORM_URL || "https://os7.dev/";
 const app = express();
 
 let vite;
@@ -44,8 +45,12 @@ app.use(async (req, res, next) => {
       ({ render } = await import("./dist/server/entry-server.js"));
     }
 
-    const { html, head } = render(url);
-    const page = template.replace("<!--app-head-->", head).replace("<!--app-html-->", html);
+    const { html, head } = render(url, { platformUrl });
+    const config = `<script>window.__OS7_SITE_CONFIG__=${JSON.stringify({ platformUrl })}</script>`;
+    const page = template
+      .replace("<!--app-head-->", head)
+      .replace("<!--app-config-->", config)
+      .replace("<!--app-html-->", html);
 
     res.status(200).set({ "Content-Type": "text/html" }).end(page);
   } catch (error) {
