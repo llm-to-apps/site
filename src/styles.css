@@ -24,3 +24,71 @@ body {
   box-sizing: border-box;
 }
 
+.os7-preview {
+  isolation: isolate;
+}
+
+.os7-border-beam {
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(37, 213, 155, 0.72), rgba(139, 92, 246, 0.62), transparent)
+    0 0 / 38% 1px no-repeat;
+  animation: os7-border-scan 5.8s linear infinite;
+  opacity: 0.9;
+}
+
+.os7-spin {
+  animation: os7-spin 1.8s linear infinite;
+}
+
+.os7-app-progress {
+  animation: os7-progress-fill 5s ease-out both;
+  width: var(--os7-progress-target, 66%);
+}
+
+@keyframes os7-border-scan {
+  0% {
+    background-position: -40% 0;
+  }
+
+  50% {
+    background-position: 140% 0;
+  }
+
+  50.1% {
+    background-position: 140% 100%;
+  }
+
+  100% {
+    background-position: -40% 100%;
+  }
+}
+
+@keyframes os7-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes os7-progress-fill {
+  0% {
+    width: 0;
+  }
+
+  100% {
+    width: var(--os7-progress-target, 66%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
