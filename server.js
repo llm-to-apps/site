@@ -31,6 +31,13 @@ if (!isProduction) {
       maxAge: "1y"
     })
   );
+
+  app.use(
+    express.static(path.resolve(__dirname, "dist/client"), {
+      index: false,
+      maxAge: "1d"
+    })
+  );
 }
 
 app.use(async (req, res, next) => {
