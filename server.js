@@ -63,7 +63,7 @@ app.use(async (req, res, next) => {
       .replace("<!--app-config-->", config)
       .replace("<!--app-html-->", html);
 
-    res.status(200).set({ "Content-Type": "text/html" }).end(page);
+    res.status(200).set({ "Content-Type": "text/html", "Cache-Control": "no-cache" }).end(page);
   } catch (error) {
     vite?.ssrFixStacktrace(error);
     next(error);
