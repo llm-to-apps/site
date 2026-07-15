@@ -413,12 +413,21 @@ export function App({ platformUrl = getClientPlatformUrl() }: AppProps) {
       return true;
     };
 
+    const toggleFullscreen = () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen?.().catch(() => undefined);
+        return;
+      }
+
+      document.exitFullscreen?.().catch(() => undefined);
+    };
+
     const handleSlideKeys = (event: KeyboardEvent) => {
       if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
         return;
       }
 
-      if (!["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft", "Escape"].includes(event.key)) {
+      if (!["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft", "Escape", "f", "F"].includes(event.key)) {
         return;
       }
 
@@ -428,6 +437,12 @@ export function App({ platformUrl = getClientPlatformUrl() }: AppProps) {
 
       if (event.key === "Escape") {
         clearPresentFocus();
+        return;
+      }
+
+      if (event.key === "f" || event.key === "F") {
+        event.preventDefault();
+        toggleFullscreen();
         return;
       }
 
@@ -1131,9 +1146,11 @@ function CategoryShift() {
 
 function ResearchProof() {
   return (
-    <section id="research" className="border-t border-line bg-white/[0.025]">
-      <div className="mx-auto w-full max-w-7xl px-5 py-24">
-        <div className="os7-present-pad max-w-3xl" data-present-step>
+    <section id="research" className="relative overflow-hidden border-t border-line bg-white/[0.025]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_26%,rgba(37,213,155,0.12),transparent_30%),radial-gradient(circle_at_84%_64%,rgba(139,92,246,0.12),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.026),transparent_52%)]" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/14 to-transparent" />
+      <div className="relative mx-auto w-full max-w-7xl px-5 py-24">
+        <div className="os7-present-pad" data-present-step>
           <h2 className="text-4xl/[1.3] font-semibold md:text-5xl/[1.3]">
             AI changes not only apps.
             <br />
@@ -1150,16 +1167,15 @@ function ResearchProof() {
               key={card.quote}
               href={card.sourceUrl}
               data-present-step
-              className="group relative flex min-h-[330px] flex-col overflow-hidden rounded-xl border border-line bg-ink p-6 transition hover:-translate-y-1 hover:border-mint/25 hover:bg-white/[0.035]"
+              className="group relative flex min-h-[280px] flex-col overflow-hidden rounded-xl border border-line bg-ink p-5 transition hover:-translate-y-1 hover:border-mint/25 hover:bg-white/[0.035]"
               target="_blank"
               rel="noreferrer"
             >
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-mint/60 via-violet/45 to-transparent opacity-70" />
-              <div className="mb-6 text-5xl font-semibold leading-none text-mint/28">“</div>
-              <blockquote className="text-2xl font-semibold leading-[1.18] text-white">{card.quote}</blockquote>
-              <div className="mt-5 h-px bg-line" />
+              <div className="mb-4 text-4xl font-semibold leading-none text-mint/28">“</div>
+              <blockquote className="text-xl font-semibold leading-[1.2] text-white">{card.quote}</blockquote>
+              <div className="mt-4 h-px bg-line" />
               <p className="mt-4 text-sm font-semibold text-white/72">{card.attribution}</p>
-              <p className="mt-auto pt-8 text-sm leading-6 text-white/56 transition group-hover:text-white/72">
+              <p className="mt-auto pt-6 text-sm leading-6 text-white/56 transition group-hover:text-white/72">
                 {card.interpretation}
               </p>
             </a>
